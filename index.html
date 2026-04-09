@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stick Arc</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      background: black;
+    }
+
+    .bg {
+      width: 100vw;
+      height: 100vh;
+      background: url("bg1.png") center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Clouds */
+    .cloud {
+      position: absolute;
+      width: 220px;
+      opacity: 0.8;
+      animation: moveCloud linear infinite;
+    }
+
+    /* Improved positions + delays */
+    .cloud1 {
+      top: 10%;
+      animation-duration: 20s;
+      animation-delay: 0s;
+    }
+
+    .cloud2 {
+      top: 25%;
+      animation-duration: 30s;
+      animation-delay: -10s; /* mid se start */
+    }
+
+    .cloud3 {
+      top: 15%;
+      animation-duration: 25s;
+      animation-delay: -18s; /* aur aage se start */
+    }
+    .bg {
+  width: 100vw;
+  height: 100vh;
+  background: url("bg1.png") center/cover no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* Left Image */
+.left-img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 800px;
+  max-width: 50vw;
+
+  z-index: 3; /* sabse upar */
+  pointer-events: none;
+  
+}
+.left-img {
+  filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.6));
+}
+    /* Animation */
+    @keyframes moveCloud {
+      from {
+        transform: translateX(100vw);
+      }
+      to {
+        transform: translateX(-250px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg">
+    <img src="c1.png" class="cloud cloud1">
+    <img src="c2.png" class="cloud cloud2">
+    <img src="c3.png" class="cloud cloud3">
+    <img src="sparcher.png" class="left-img">
+  </div>
+
+</body>
+</html>
