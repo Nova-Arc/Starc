@@ -17,12 +17,32 @@
       background: black;
     }
 
+    /* Rotate Warning */
+    #rotate-warning {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      font-size: 22px;
+      z-index: 9999;
+    }
+
     .bg {
       width: 100vw;
       height: 100vh;
       background: url("bg1.png") center/cover no-repeat;
       position: relative;
       overflow: hidden;
+      display: none; /* initially hidden */
     }
 
     /* Clouds */
@@ -31,9 +51,9 @@
       width: 220px;
       opacity: 0.8;
       animation: moveCloud linear infinite;
+      z-index: 2;
     }
 
-    /* Improved positions + delays */
     .cloud1 {
       top: 10%;
       animation-duration: 20s;
@@ -43,39 +63,30 @@
     .cloud2 {
       top: 25%;
       animation-duration: 30s;
-      animation-delay: -10s; /* mid se start */
+      animation-delay: -10s;
     }
 
     .cloud3 {
       top: 15%;
       animation-duration: 25s;
-      animation-delay: -18s; /* aur aage se start */
+      animation-delay: -18s;
     }
-    .bg {
-  width: 100vw;
-  height: 100vh;
-  background: url("bg1.png") center/cover no-repeat;
-  position: relative;
-  overflow: hidden;
-}
 
+    /* Left Image */
+    .left-img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
 
-/* Left Image */
-.left-img {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+      width: 800px;
+      max-width: 50vw;
 
-  width: 800px;
-  max-width: 50vw;
+      z-index: 3;
+      pointer-events: none;
 
-  z-index: 3; /* sabse upar */
-  pointer-events: none;
-  
-}
-.left-img {
-  filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.6));
-}
+      filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.6));
+    }
+
     /* Animation */
     @keyframes moveCloud {
       from {
@@ -90,12 +101,53 @@
 
 <body>
 
-  <div class="bg">
+  <!-- Rotate Screen -->
+  <div id="rotate-warning">
+    <div>
+      📱<br>
+      Rotate Device<br>
+      ➡️ Landscape Mode Required
+    </div>
+  </div>
+
+  <!-- Main Background -->
+  <div class="bg" id="bg">
     <img src="c1.png" class="cloud cloud1">
     <img src="c2.png" class="cloud cloud2">
     <img src="c3.png" class="cloud cloud3">
     <img src="sparcher.png" class="left-img">
   </div>
+
+  <script>
+    const warning = document.getElementById("rotate-warning");
+    const bg = document.getElementById("bg");
+
+    function enterFullscreen() {
+      const el = document.documentElement;
+
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    }
+
+    function checkOrientation() {
+      if (window.innerHeight > window.innerWidth) {
+        // Portrait
+        warning.style.display = "flex";
+        bg.style.display = "none";
+      } else {
+        // Landscape
+        warning.style.display = "none";
+        bg.style.display = "block";
+      }
+    }
+
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("load", checkOrientation);
+
+    // User tap → fullscreen trigger
+    document.addEventListener("click", enterFullscreen);
+  </script>
 
 </body>
 </html>
