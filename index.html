@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 🔥 IMPORTANT META (fullscreen feel) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+
   <title>Stick Arc</title>
 
   <style>
@@ -12,9 +16,11 @@
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
+      height: 100%;
       overflow: hidden;
       background: black;
+      touch-action: manipulation;
     }
 
     /* Rotate Warning */
@@ -42,7 +48,7 @@
       background: url("bg1.png") center/cover no-repeat;
       position: relative;
       overflow: hidden;
-      display: none; /* initially hidden */
+      display: none;
     }
 
     /* Clouds */
@@ -52,6 +58,7 @@
       opacity: 0.8;
       animation: moveCloud linear infinite;
       z-index: 2;
+      pointer-events: none;
     }
 
     .cloud1 {
@@ -104,7 +111,7 @@
   <!-- Rotate Screen -->
   <div id="rotate-warning">
     <div>
-      📱<br>
+      📱<br><br>
       Rotate Device<br>
       ➡️ Landscape Mode Required
     </div>
@@ -130,6 +137,12 @@
       else if (el.msRequestFullscreen) el.msRequestFullscreen();
     }
 
+    function hideAddressBar() {
+      setTimeout(() => {
+        window.scrollTo(0, 1);
+      }, 100);
+    }
+
     function checkOrientation() {
       if (window.innerHeight > window.innerWidth) {
         // Portrait
@@ -139,14 +152,26 @@
         // Landscape
         warning.style.display = "none";
         bg.style.display = "block";
+
+        hideAddressBar();
       }
     }
 
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("load", checkOrientation);
+    window.addEventListener("load", () => {
+      checkOrientation();
+      hideAddressBar();
 
-    // User tap → fullscreen trigger
-    document.addEventListener("click", enterFullscreen);
+      // try fullscreen automatically (may silently fail)
+      enterFullscreen();
+    });
+
+    window.addEventListener("resize", checkOrientation);
+
+    // First tap = guaranteed fullscreen
+    document.addEventListener("click", () => {
+      enterFullscreen();
+      hideAddressBar();
+    });
   </script>
 
 </body>
